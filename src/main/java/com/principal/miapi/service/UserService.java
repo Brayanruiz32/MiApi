@@ -3,9 +3,12 @@ package com.principal.miapi.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.principal.miapi.dto.request.UserRequestDTO;
+import com.principal.miapi.dto.response.UserResponseDTO;
 import com.principal.miapi.model.User;
 import com.principal.miapi.repository.UserRepository;
 
@@ -16,31 +19,31 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    private ModelMapper modelMapper = new ModelMapper();
 
-    public User createUser(User user) {
-        
-        return userRepository.save(user);
-
+    public List<UserResponseDTO> findAll() {
+        List<UserResponseDTO> listUsers= userRepository.findAll().stream().map(u -> modelMapper.map(u, UserResponseDTO.class)).toList();
+        return listUsers;
     }
 
-    public List<User> findAll() {
-
-        return userRepository.findAll();
-
+    public UserResponseDTO createUser(UserRequestDTO user) {
+        User newUser = modelMapper.map(user, User.class);
+        return modelMapper.map(userRepository.save(newUser), UserResponseDTO.class);
     }
 
-    public User findUser(Long id) {
+    public UserResponseDTO findUser(Long id) {
         //User user =  userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Usuario no encontrado con el id "+id));
         User user =  userRepository.findById(id).orElseThrow(()->new EntityNotFoundException());
-        return user;
+        return modelMapper.map(user, UserResponseDTO.class);
         
     }
 
-    public User updateUser(Long id, User user) {
+    public UserResponseDTO updateUser(Long id, UserRequestDTO user) {
         User updateUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException()); 
         updateUser.setUsername(user.getUsername());
         updateUser.setPassword(user.getPassword());
-        return userRepository.save(updateUser);
+        return modelMapper.map(userRepository.save(updateUser), UserResponseDTO.class);
     }
 
     public void deleteUser(Long id) {
