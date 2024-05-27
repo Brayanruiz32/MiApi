@@ -3,6 +3,7 @@ package com.principal.miapi.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,21 +35,20 @@ public class ApiController {
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
-
+    public ResponseEntity createUser(@RequestBody User user) {
         User newUser = userService.createUser(user);
-        return newUser;
-
+        return new ResponseEntity<>( newUser ,HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public User updateUser() {
-        return null;
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user) {
+        return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser() {
-
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

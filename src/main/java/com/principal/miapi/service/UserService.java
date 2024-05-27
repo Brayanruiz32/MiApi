@@ -31,19 +31,24 @@ public class UserService {
 
     public User findUser(Long id) {
         //User user =  userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Usuario no encontrado con el id "+id));
-        Optional<User> user =  userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        }else{
-            throw new EntityNotFoundException("Usuario no encontrado con");
-        }
+        User user =  userRepository.findById(id).orElseThrow(()->new EntityNotFoundException());
+        return user;
         
     }
 
+    public User updateUser(Long id, User user) {
+        User updateUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException()); 
+        updateUser.setUsername(user.getUsername());
+        updateUser.setPassword(user.getPassword());
+        return userRepository.save(updateUser);
+    }
 
-
-
-
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
+        userRepository.deleteById(id);    
+    }
 
 
 
