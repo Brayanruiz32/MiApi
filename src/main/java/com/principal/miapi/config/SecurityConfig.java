@@ -1,7 +1,5 @@
 package com.principal.miapi.config;
 
-import java.net.http.HttpRequest;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,8 +31,8 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.POST, "/users/create").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN");
+                    http.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
                     http.anyRequest().authenticated();
                 })
                 .build();

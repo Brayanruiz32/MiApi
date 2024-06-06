@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.principal.miapi.dto.request.UserRequestDTO;
 import com.principal.miapi.dto.response.UserResponseDTO;
-import com.principal.miapi.model.User;
 import com.principal.miapi.service.UserService;
 
 @RestController

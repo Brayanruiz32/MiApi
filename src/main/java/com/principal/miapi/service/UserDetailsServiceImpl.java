@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import com.principal.miapi.model.User;
 import com.principal.miapi.repository.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
