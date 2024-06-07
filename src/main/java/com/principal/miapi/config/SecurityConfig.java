@@ -30,11 +30,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.POST, "/users/create").hasAnyRole("ADMIN");
-                    http.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
-                    http.anyRequest().authenticated();
-                })
                 .build();
     }
 
